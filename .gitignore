@@ -1,5 +1,44 @@
 # Prerequisites
-*.d
+# Qt Creator and CMake artifacts
+# Prerequisites
+CMakeFiles/
+CMakeCache.txt
+CMakeScripts/
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps/
+
+# IDE artifacts (Visual Studio, VS Code, CLion, etc.)
+.vscode/
+.idea/
+*.user
+*.user.*
+*.suo
+*.userosscache
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.ipch
+*.aps
+*.ncb
+*.opendb
+*.sdf
+*.cache
+*.db
+*.VC.db
+*.VC.VC.opendb
+
+# Build directories
+build/
+bin/
+out/
+x64/
+Debug/
+Release/
 
 # Compiled Object files
 *.slo
@@ -11,18 +50,10 @@
 *.gch
 *.pch
 
-# Linker files
-*.ilk
-
-# Debugger Files
-*.pdb
-
 # Compiled Dynamic libraries
 *.so
 *.dylib
 *.dll
-*.so.*
-
 
 # Fortran module files
 *.mod
@@ -39,34 +70,26 @@
 *.out
 *.app
 
-# Build directories
-build/
-Build/
-build-*/
+# Crypto++ specific files
+*.bin
+*.der
+input.txt
+aes_encrypted.bin
+des_encrypted.bin
+rsa_encrypted.bin
+aes_key.bin
+des_key.bin
+rsa_public.der
+rsa_private.der
+aes_decrypted.txt
+des_decrypted.txt
+rsa_decrypted.txt
+aes_decrypted_gui.txt
+des_decrypted_gui.txt
+rsa_decrypted_gui.txt
 
-# CMake generated files
-CMakeFiles/
-CMakeCache.txt
-cmake_install.cmake
-Makefile
-install_manifest.txt
-compile_commands.json
-
-# Temporary files
+# Temp files
 *.tmp
-*.log
 *.bak
 *.swp
-
-# vcpkg
-vcpkg_installed/
-
-# debug information files
-*.dwo
-
-# test output & cache
-Testing/
-.cache/
-
-# vscode 
-.vscode/
+*~

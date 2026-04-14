@@ -1,105 +1,121 @@
-# Cryptography Algorithms Demo (AES, DES, RSA)
+# Cryptography Lab Suite (AES, DES, RSA)
 
-This project is a collection of demonstration tools for basic cryptographic algorithms, intended for studying and researching **Information System Security**. The project is implemented in C++ using the powerful **Crypto++** library.
-
-## Key Features
-- **AES-256 Encryption (CBC mode)**: Advanced Encryption Standard with a 256-bit key.
-- **DES-64 Encryption (CBC mode)**: Data Encryption Standard with a 64-bit key (for conceptual demonstration).
-- **RSA-2048 Encryption (OAEP)**: The most popular public-key cryptography algorithm.
+A professional desktop application designed for studying and demonstrating core cryptographic algorithms. This project provides a user-friendly graphical interface (GUI) to perform encryption and decryption using **AES-256**, **DES**, and **RSA-2048**.
 
 ---
 
-## Prerequisites & Installation
+## Features
 
-### 1. C++ Compiler
-You need a C++ compiler such as `g++` (MinGW for Windows or GCC for Linux) or `MSVC`.
+- **Modern Desktop GUI**: Built with **Dear ImGui**, providing a lightweight and high-performance "hacker-style" interface.
+- **Support for Major Algorithms**:
+    - **AES-256 (CBC)**: High-security symmetric encryption.
+    - **DES (CBC)**: Classic data encryption standard for educational use.
+    - **RSA-2048 (OAEP)**: Public-key/asymmetric encryption with key pair generation.
+- **Efficient & Portable**: CMake automatically manages all dependencies (GLFW, ImGui) via FetchContent.
+- **Real-Time Logging**: Monitor the encryption/decryption process through an integrated status console.
 
-### 2. Crypto++ Library Installation
-This project depends on the **Crypto++** library.
+---
 
-#### On Windows (MinGW/MSYS2):
-```bash
-pacman -S mingw-w64-x86_64-cryptopp
+## Project Structure
+
+```text
+├── src/
+│   ├── core/           # Modularized C++ encryption logic
+│   │   ├── CryptoService.h
+│   │   └── CryptoService.cpp
+│   ├── ui/             # Graphical User Interface code (ImGui)
+│   │   ├── ImGuiApp.h
+│   │   └── ImGuiApp.cpp
+│   └── main_imgui.cpp   # Application entry point (GLFW + OpenGL3)
+├── CMakeLists.txt      # Build configuration (Automatic dependency fetch)
+└── README.md           # Documentation
 ```
 
-#### On Windows (vcpkg):
+---
+
+## Getting Started
+
+### Prerequisites
+
+To build and run this project, you will need:
+- **C++ Compiler** (MSVC, GCC, or Clang)
+- **CMake** (v3.16 or higher)
+- **OpenGL Drivers** (Standard on most systems)
+- **Crypto++ Library** (installed and accessible in your environment)
+
+### Installation (Crypto++)
+
+#### Windows (with vcpkg):
 ```bash
 vcpkg install cryptopp:x64-windows
 ```
 
-#### On Linux (Ubuntu/Debian):
+#### Linux (Ubuntu/Debian):
 ```bash
-sudo apt-get update
-sudo apt-get install libcryptopp-dev libcryptopp-doc libcryptopp-utils
+sudo apt-get install libcryptopp-dev
 ```
 
 ---
 
-## Compilation and Execution Guide
+## Build Instructions
 
-Each algorithm is implemented in a separate, independent `.cpp` file. Follow the instructions below to run each demo:
+### Using Bash/Terminal:
+1. **Clone the repository** (if applicable).
+2. **Create a build directory**:
+   ```bash
+   mkdir build && cd build
+   ```
+3. **Configure with CMake**:
+   ```bash
+   cmake ..
+   ```
+4. **Compile the application**:
+   ```bash
+   cmake --build . --config Release
+   ```
+5. **Run the app**:
+   ```bash
+   ./Release/CryptoLabSuite
+   ```
 
-### 1. AES (Advanced Encryption Standard)
-Compile:
-```bash
-g++ AES_demo.cpp -o aes_tool -lcryptopp
-```
-Run:
-```bash
-./aes_tool
-```
-
-### 2. DES (Data Encryption Standard)
-Compile:
-```bash
-g++ DES_demo.cpp -o des_tool -lcryptopp
-```
-Run:
-```bash
-./des_tool
-```
-
-### 3. RSA (Rivest–Shamir–Adleman)
-Compile:
-```bash
-g++ RSA_demo.cpp -o rsa_tool -lcryptopp
-```
-Run:
-```bash
-./rsa_tool
-```
-
----
-
-## How it Works
-
-When you run any of the files above, the program performs the following steps:
-
-### Encryption Process (Option 1):
-1.  **Key Generation**: The program generates a random Key and an Initialization Vector (IV/Salt).
-2.  **File Reading**: Reads content from `input.txt` (if it doesn't exist, the program will automatically create a sample file).
-3.  **Encryption Execution**: Uses the selected algorithm to encrypt the data.
-4.  **File Output**: 
-    - Saves the encrypted file as binary (`.bin`).
-    - Saves the key into separate files (`.bin` for symmetric encryption, `.der` for RSA) for later decryption.
-
-### Decryption Process (Option 2):
-1.  **Key Loading**: Reloads the saved keys from the key files.
-2.  **Ciphertext Reading**: Reads the binary data from the encrypted file.
-3.  **Decryption Execution**: Converts the ciphertext back to the original plaintext.
-4.  **Result Output**: Saves the decrypted result into a text file (`_decrypted.txt`) for verification.
+### Using PowerShell:
+1. **Create and enter build directory**:
+   ```powershell
+   New-Item -ItemType Directory -Force -Path build
+   Set-Location build
+   ```
+2. **Configure with CMake**:
+   ```powershell
+   cmake ..
+   ```
+3. **Compile the application**:
+   ```powershell
+   cmake --build . --config Release
+   ```
+4. **Run the app**:
+   ```powershell
+   .\Release\CryptoLabSuite.exe
+   ```
 
 ---
 
-## Important Notes
-- The key files (`.bin`, `.der`) are essential for decryption. If these files are lost, the data cannot be recovered.
-- This project is for educational/demo purposes only and should not be used in high-security production environments without professional refinement.
+## How to Use
+
+1. **Select Algorithm**: Choose the tab for AES, DES, or RSA.
+2. **Select Files**:
+    - Click **Browse** (or type) to select the input file you want to encrypt.
+    - Provide names for the Secret Key and Output binary files.
+3. **Execute**:
+    - Click **Encrypt** to convert your file into ciphertext.
+    - Provide the key file and click **Decrypt** to recover the original content.
+4. **RSA Only**: Use the **Gen RSA Keys** button first to create your public/private key pair.
 
 ---
 
-## File Structure
-- `AES_demo.cpp`: AES symmetric encryption.
-- `DES_demo.cpp`: DES symmetric encryption.
-- `RSA_demo.cpp`: RSA asymmetric encryption.
-- `input.txt`: Source file containing data to be encrypted.
-- `README.md`: Project documentation.
+## Important Security Note
+This application is intended for **academic and demonstration purposes**. For production-grade security, always follow industry-standard practices for key storage and entropy management.
+
+---
+
+## Credits
+Developed using the **Crypto++** library and **Dear ImGui**.
