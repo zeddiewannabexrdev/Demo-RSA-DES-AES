@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(CryptoLabSuite_ImGui VERSION 1.0.0 LANGUAGES CXX)
+# Force compatibility with older CMake files for newer CMake 4.x versions
+set(CMAKE_POLICY_VERSION_MINIMUM 3.10)
+
+# Policy for Git submodules
+cmake_policy(SET CMP0097 NEW)
+
+project(CryptoLabSuite VERSION 1.0.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -26,17 +32,26 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(imgui)
 
-# 3. Fetch Crypto++ (Automated version)
+# 3. Fetch Crypto++ (Official CMake Wrapper with correct Tag)
 FetchContent_Declare(
-    cryptopp
+    cryptopp_cmake 
     GIT_REPOSITORY https://github.com/abdes/cryptopp-cmake.git
-    GIT_TAG master
+    GIT_TAG CRYPTOPP_8_9_0  # <-- Sửa lại chính xác tên tag này
+    GIT_SUBMODULES_RECURSE ON
 )
 set(CRYPTOPP_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(CRYPTOPP_BUILD_SHARED OFF CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(cryptopp)
+FetchContent_MakeAvailable(cryptopp_cmake)
 
-# 4. Setup Project Sources
+# 4. Fetch Portable File Dialogs (For the "Browse" buttons)
+FetchContent_Declare(
+    pfd
+    GIT_REPOSITORY https://github.com/samhocevar/portable-file-dialogs.git
+    GIT_TAG main
+)
+FetchContent_MakeAvailable(pfd)
+
+# 5. Setup Project Sources
 set(IMGUI_DIR ${imgui_SOURCE_DIR})
 set(IMGUI_SOURCES
     ${IMGUI_DIR}/imgui.cpp
@@ -56,22 +71,23 @@ set(PROJECT_SOURCES
     ${IMGUI_SOURCES}
 )
 
-# 5. Create Executable
+# 6. Create Executable
 add_executable(CryptoLabSuite ${PROJECT_SOURCES})
 
-# 6. Include Directories
+# 7. Include Directories
 target_include_directories(CryptoLabSuite PRIVATE 
     src/
     ${IMGUI_DIR}
     ${IMGUI_DIR}/backends
+    ${pfd_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/_deps/cryptopp_cmake-build
 )
 
-# 7. Linking
+# 8. Linking
 find_package(OpenGL REQUIRED)
 
-# Link against the automated cryptopp-static target
 target_link_libraries(CryptoLabSuite PRIVATE 
     glfw 
     OpenGL::GL 
-    cryptopp-static
+    cryptopp::cryptopp
 )

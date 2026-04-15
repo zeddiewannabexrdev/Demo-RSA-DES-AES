@@ -1,0 +1,12 @@
+{
+  "version": "0.2.1",
+  "defaults": {},
+  "configurations": [
+    {
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "cryptest.exe (_deps\\cryptopp_cmake-build\\cryptopp\\cryptest.exe)",
+      "name": "cryptest.exe (_deps\\cryptopp_cmake-build\\cryptopp\\cryptest.exe)"
+    }
+  ]
+}
