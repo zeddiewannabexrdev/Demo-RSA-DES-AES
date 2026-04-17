@@ -37,6 +37,10 @@ int main(int, char**)
     ImGuiIO& io = ImGui::GetIO(); (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 
+    io.FontGlobalScale = 1.5f;
+    ImGuiStyle& style = ImGui::GetStyle();
+    style.ScaleAllSizes(1.5f);
+
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
 

@@ -1,0 +1,3 @@
+Đây là một thông điệp siêu bí mật dùng để kiểm tra tính năng mã hóa RSA bất đối xứng.
+Lưu ý quan trọng: Chỉ có thể mã hóa đoạn văn bản nhỏ dưới 200 byte do cấu trúc thiết kế của thuật toán RSA-2048.
+Tài liệu mật của bộ quốc phòng, không được chia sẻ cho người khác.

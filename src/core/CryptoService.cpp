@@ -6,6 +6,7 @@
 #include <cryptopp/files.h>
 #include <cryptopp/filters.h>
 #include <cryptopp/sha.h>
+#include <chrono>
 
 using namespace CryptoPP;
 
@@ -23,6 +24,8 @@ SecByteBlock CryptoService::LoadKey(const std::string& filename) {
 // AES Implementations
 std::string CryptoService::encryptAES(const std::string& inputFile, const std::string& keyFile, const std::string& outputFile) {
     try {
+        auto start = std::chrono::high_resolution_clock::now();
+
         AutoSeededRandomPool prng;
         SecByteBlock key(AES::MAX_KEYLENGTH);
         prng.GenerateBlock(key, key.size());
@@ -42,7 +45,10 @@ std::string CryptoService::encryptAES(const std::string& inputFile, const std::s
         out.write(cipher.data(), cipher.size());
         out.close();
 
-        return "AES Encryption Success!\nKey: " + keyFile + "\nFile: " + outputFile;
+        auto end = std::chrono::high_resolution_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+
+        return "AES Encryption Success!\nKey: " + keyFile + "\nFile: " + outputFile + "\nTime: " + std::to_string(duration) + " ms";
     } catch (const std::exception& e) {
         return "AES Error: " + std::string(e.what());
     }
@@ -74,6 +80,8 @@ std::string CryptoService::decryptAES(const std::string& inputFile, const std::s
 // DES Implementations
 std::string CryptoService::encryptDES(const std::string& inputFile, const std::string& keyFile, const std::string& outputFile) {
     try {
+        auto start = std::chrono::high_resolution_clock::now();
+
         AutoSeededRandomPool prng;
         SecByteBlock key(DES::DEFAULT_KEYLENGTH);
         prng.GenerateBlock(key, key.size());
@@ -93,7 +101,10 @@ std::string CryptoService::encryptDES(const std::string& inputFile, const std::s
         out.write(cipher.data(), cipher.size());
         out.close();
 
-        return "DES Encryption Success!\nKey: " + keyFile + "\nFile: " + outputFile;
+        auto end = std::chrono::high_resolution_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+
+        return "DES Encryption Success!\nKey: " + keyFile + "\nFile: " + outputFile + "\nTime: " + std::to_string(duration) + " ms";
     } catch (const std::exception& e) {
         return "DES Error: " + std::string(e.what());
     }
@@ -101,6 +112,8 @@ std::string CryptoService::encryptDES(const std::string& inputFile, const std::s
 
 std::string CryptoService::decryptDES(const std::string& inputFile, const std::string& keyFile, const std::string& outputFile) {
     try {
+        auto start = std::chrono::high_resolution_clock::now();
+
         SecByteBlock key = LoadKey(keyFile);
         std::ifstream in(inputFile, std::ios::binary);
         SecByteBlock iv(DES::BLOCKSIZE);
@@ -116,7 +129,10 @@ std::string CryptoService::decryptDES(const std::string& inputFile, const std::s
         std::ofstream out(outputFile, std::ios::binary);
         out.write(recovered.data(), recovered.size());
 
-        return "DES Decryption Success!\nFile: " + outputFile;
+        auto end = std::chrono::high_resolution_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+
+        return "DES Decryption Success!\nFile: " + outputFile + "\nTime: " + std::to_string(duration) + " ms";
     } catch (const std::exception& e) {
         return "DES Decryption Error: " + std::string(e.what());
     }
@@ -146,6 +162,8 @@ std::string CryptoService::generateRSAKeys(const std::string& pubKeyFile, const 
 
 std::string CryptoService::encryptRSA(const std::string& inputFile, const std::string& pubKeyFile, const std::string& outputFile) {
     try {
+        auto start = std::chrono::high_resolution_clock::now();
+
         RSA::PublicKey pub;
         {
             FileSource fs(pubKeyFile.c_str(), true);
@@ -158,7 +176,11 @@ std::string CryptoService::encryptRSA(const std::string& inputFile, const std::s
 
         std::ofstream out(outputFile, std::ios::binary);
         out.write(cipher.data(), cipher.size());
-        return "RSA Encryption Success!\nFile: " + outputFile;
+
+        auto end = std::chrono::high_resolution_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+
+        return "RSA Encryption Success!\nFile: " + outputFile + "\nTime: " + std::to_string(duration) + " ms";
     } catch (const std::exception& e) {
         return "RSA Encrypt Error: " + std::string(e.what());
     }
@@ -166,6 +188,8 @@ std::string CryptoService::encryptRSA(const std::string& inputFile, const std::s
 
 std::string CryptoService::decryptRSA(const std::string& inputFile, const std::string& privKeyFile, const std::string& outputFile) {
     try {
+        auto start = std::chrono::high_resolution_clock::now();
+        
         RSA::PrivateKey priv;
         {
             FileSource fs(privKeyFile.c_str(), true);
@@ -178,7 +202,9 @@ std::string CryptoService::decryptRSA(const std::string& inputFile, const std::s
 
         std::ofstream out(outputFile, std::ios::binary);
         out.write(recovered.data(), recovered.size());
-        return "RSA Decryption Success!\nFile: " + outputFile;
+        auto end = std::chrono::high_resolution_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+        return "RSA Decryption Success!\nFile: " + outputFile + "\nTime: " + std::to_string(duration) + " ms";
     } catch (const std::exception& e) {
         return "RSA Decrypt Error: " + std::string(e.what());
     }

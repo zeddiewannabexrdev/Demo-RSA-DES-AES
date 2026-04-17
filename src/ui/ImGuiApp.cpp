@@ -71,13 +71,13 @@ void ImGuiApp::renderAesTab() {
     }
 
     ImGui::Spacing();
-    if (ImGui::Button("Encrypt (AES)", ImVec2(120, 30))) {
+    if (ImGui::Button("Encrypt (AES)")) {
         log("AES Encrypting: " + std::string(state.aesIn));
         std::string res = CryptoService::encryptAES(state.aesIn, state.aesKey, state.aesOut);
         log(res);
     }
     ImGui::SameLine();
-    if (ImGui::Button("Decrypt (AES)", ImVec2(120, 30))) {
+    if (ImGui::Button("Decrypt (AES)")) {
         log("AES Decrypting: " + std::string(state.aesOut));
         std::string res = CryptoService::decryptAES(state.aesOut, state.aesKey, "aes_decrypted.txt");
         log(res);
@@ -89,10 +89,27 @@ void ImGuiApp::renderDesTab() {
     ImGui::TextColored(ImVec4(0.4f, 0.7f, 1.0f, 1.0f), "Symmetric Encryption (DES)");
 
     ImGui::InputText("Input File", state.desIn, sizeof(state.desIn));
+    ImGui::SameLine();
+    if (ImGui::Button("Browse##desIn")) {
+        auto selection = pfd::open_file("Select Input File", ".").result();
+        if (!selection.empty()) strncpy(state.desIn, selection[0].c_str(), sizeof(state.desIn));
+    }
+
     ImGui::InputText("Key File", state.desKey, sizeof(state.desKey));
+    ImGui::SameLine();
+    if (ImGui::Button("Browse##desKey")) {
+        auto selection = pfd::open_file("Select Key File", ".").result();
+        if (!selection.empty()) strncpy(state.desKey, selection[0].c_str(), sizeof(state.desKey));
+    }
+
     ImGui::InputText("Output File", state.desOut, sizeof(state.desOut));
+    ImGui::SameLine();
+    if (ImGui::Button("Browse##desOut")) {
+        auto selection = pfd::save_file("Select Output File", ".").result();
+        if (!selection.empty()) strncpy(state.desOut, selection.c_str(), sizeof(state.desOut));
+    }
     
-    // We can add Browse buttons here as well, but keeping it simple for now
+    ImGui::Spacing();
     if (ImGui::Button("Encrypt (DES)")) {
         log("DES Encrypting...");
         std::string res = CryptoService::encryptDES(state.desIn, state.desKey, state.desOut);
@@ -111,9 +128,34 @@ void ImGuiApp::renderRsaTab() {
     ImGui::TextColored(ImVec4(1.0f, 0.8f, 0.4f, 1.0f), "Asymmetric Encryption (RSA)");
 
     ImGui::InputText("Input File", state.rsaIn, sizeof(state.rsaIn));
+    ImGui::SameLine();
+    if (ImGui::Button("Browse##rsaIn")) {
+        auto selection = pfd::open_file("Select Input File", ".").result();
+        if (!selection.empty()) strncpy(state.rsaIn, selection[0].c_str(), sizeof(state.rsaIn));
+    }
+
     ImGui::InputText("Pub Key", state.rsaPub, sizeof(state.rsaPub));
+    ImGui::SameLine();
+    if (ImGui::Button("Browse##rsaPub")) {
+        auto selection = pfd::open_file("Select Public Key", ".").result();
+        if (!selection.empty()) strncpy(state.rsaPub, selection[0].c_str(), sizeof(state.rsaPub));
+    }
+
     ImGui::InputText("Priv Key", state.rsaPriv, sizeof(state.rsaPriv));
+    ImGui::SameLine();
+    if (ImGui::Button("Browse##rsaPriv")) {
+        auto selection = pfd::open_file("Select Private Key", ".").result();
+        if (!selection.empty()) strncpy(state.rsaPriv, selection[0].c_str(), sizeof(state.rsaPriv));
+    }
+
     ImGui::InputText("Output File", state.rsaOut, sizeof(state.rsaOut));
+    ImGui::SameLine();
+    if (ImGui::Button("Browse##rsaOut")) {
+        auto selection = pfd::save_file("Select Output File", ".").result();
+        if (!selection.empty()) strncpy(state.rsaOut, selection.c_str(), sizeof(state.rsaOut));
+    }
+
+    ImGui::Spacing();
 
     if (ImGui::Button("Gen RSA Keys")) {
         log("Generating RSA Keys...");
